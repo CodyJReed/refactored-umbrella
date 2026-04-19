@@ -5,7 +5,7 @@
         {{ type === "sign-up" ? "Sign up" : "Sign in" }}
       </h1>
 
-      <UForm :state="formData" @submit="onSubmit" class="space-y-4">
+      <UForm :state="formData" @submit="onSubmit" class="space-y-4" :schema="schema">
         <UFormField label="email" name="email">
           <UInput v-model="formData.email" class="w-full" />
         </UFormField>
@@ -54,10 +54,18 @@ const formData = reactive({
   password: "abc123",
 });
 
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
+
 async function onSubmit(event) {
   event.preventDefault();
 
-  console.log(formData.value);
+  console.log(formData);
 }
 
 definePageMeta({
