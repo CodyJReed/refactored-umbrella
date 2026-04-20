@@ -52,7 +52,7 @@ const type = ref("sign-up");
 const loading = ref(false);
 const formData = reactive({
   email: "cody@test.com",
-  password: "abc123",
+  password: "Abc123",
 });
 
 const schema = yup.object({

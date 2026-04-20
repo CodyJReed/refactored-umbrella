@@ -10,6 +10,10 @@ export const signUpHelper = async (formData, type) => {
         body: formData,
       });
     } else {
+      response = await $fetch('/api/auth/sign-in', {
+        method: 'POST',
+        body: formData
+      })
     }
     console.log(response.user);
     // Pinia
