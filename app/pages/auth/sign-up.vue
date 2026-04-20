@@ -46,6 +46,7 @@
 
 <script setup>
 import * as yup from "yup";
+import { signUpHelper } from "~/composables/signUpHelper";
 
 const type = ref("sign-up");
 const loading = ref(false);
@@ -64,8 +65,15 @@ const schema = yup.object({
 
 async function onSubmit(event) {
   event.preventDefault();
+  loading.value = true;
 
-  console.log(formData);
+  try{
+    await signUpHelper(formData, type.value)
+  }catch(error) {
+
+  }finally{
+    loading.value = false; 
+  }
 }
 
 definePageMeta({
