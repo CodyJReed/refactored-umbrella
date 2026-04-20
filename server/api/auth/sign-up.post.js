@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import User from "../../utils/models/user";
 import { dbConnect } from "~~/server/utils/db";
+import { SignUpSchema } from "~~/server/utils/schemas/signup-schema";
 
 export default defineEventHandler(async (event) => {
   try {
@@ -9,7 +10,17 @@ export default defineEventHandler(async (event) => {
     const { email, password } = body;
 
     // Validate eith Yup
-
+    try {
+      await SignUpSchema.validate(body, { abortEarly: false });
+    } catch (validationError) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Validation failed",
+        data: {
+          errorsArray: validationError.errors,
+        },
+      });
+    }
     const existingUser = await User.findOne({
       email,
     });
