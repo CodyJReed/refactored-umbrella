@@ -78,5 +78,6 @@ async function onSubmit(event) {
 
 definePageMeta({
   layout: "auth",
+  middleware: ['sign-up-guard']
 });
 </script>

@@ -1,6 +1,9 @@
+import { useAuthStore } from "#imports";
+
 export const signUpHelper = async (formData, type) => {
   const { fetch: refreshSession } = useUserSession();
   const toast = useToast();
+  const authStore = useAuthStore()
   let response;
 
   try {
@@ -15,8 +18,9 @@ export const signUpHelper = async (formData, type) => {
         body: formData
       })
     }
-    console.log(response.user);
+    
     // Pinia
+    authStore.login(response.user)
     toast.add({
       title: "Congrats",
       description: "Welcome!",
