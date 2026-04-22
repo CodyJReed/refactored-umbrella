@@ -1,1 +1,24 @@
-export default defineEventHandler(async (event) => {});
+import UserEvent from "../../utils/models/user-event";
+import { checkUserSession } from "#imports";
+
+export default defineEventHandler(async (event) => {
+  try {
+    await dbConnect();
+    const session = await checkUserSession(event);
+
+    const events = await UserEvent.find({
+      owner: session.id,
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("owner");
+
+    return events;
+  } catch (error) {
+    throw createError({
+        statusCode: 500,
+        statusMessage: error.message || 'Internal server error.'
+    })
+  }
+});

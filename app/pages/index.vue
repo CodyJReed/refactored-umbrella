@@ -15,7 +15,7 @@
         </div>
     </div>
     <div v-else>
-       HomeComponent
+       <HomeEvents/>
     </div>
 </template>
 
