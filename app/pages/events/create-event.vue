@@ -32,6 +32,11 @@
         <UButton type="submit" :loading="loading" class="w-full" size="lg"
           >Create event</UButton
         >
+        <div v-if="errors.length" class="mt-4">
+          <UBadge color="error" v-for="(error, index) in errors" :key="index">
+            {{ error }}
+          </UBadge>
+        </div>
       </UForm>
     </div>
   </div>
@@ -60,7 +65,7 @@ async function onSubmit(event) {
   loading.value = true;
 
   try {
-    await useFetch("/api/events/event", {
+    await $fetch("/api/events/event", {
       method: "POST",
       body: formData,
     });
@@ -72,6 +77,13 @@ async function onSubmit(event) {
     });
     await navigateTo("/");
   } catch (error) {
+    if (error?.data?.data) {
+      errors.value = error.data.data;
+    } else {
+      errors.value = [
+        error.data.statusMessage || "An error occurred. Please try again.",
+      ];
+    }
   } finally {
     loading.value = false;
   }
