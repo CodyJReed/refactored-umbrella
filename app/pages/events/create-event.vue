@@ -58,6 +58,23 @@ const schema = yup.object({
 async function onSubmit(event) {
   event.preventDefault();
   loading.value = true;
+
+  try {
+    await useFetch("/api/events/event", {
+      method: "POST",
+      body: formData,
+    });
+
+    toast.add({
+      title: "Great!!",
+      description: "Event created!",
+      color: "success",
+    });
+    await navigateTo("/");
+  } catch (error) {
+  } finally {
+    loading.value = false;
+  }
 }
 
 definePageMeta({
